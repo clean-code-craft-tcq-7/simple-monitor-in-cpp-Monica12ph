@@ -3,36 +3,48 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
+#include <string>
 using std::cout, std::flush, std::this_thread::sleep_for, std::chrono::seconds;
 
-int vitalsOk(float temperature, float pulseRate, float spo2) {
-  if (temperature > 102 || temperature < 95) {
-    cout << "Temperature is critical!\n";
-    for (int i = 0; i < 6; i++) {
-      cout << "\r* " << flush;
-      sleep_for(seconds(1));
-      cout << "\r *" << flush;
-      sleep_for(seconds(1));
-    }
-    return 0;
-  } else if (pulseRate < 60 || pulseRate > 100) {
-    cout << "Pulse Rate is out of range!\n";
-    for (int i = 0; i < 6; i++) {
-      cout << "\r* " << flush;
-      sleep_for(seconds(1));
-      cout << "\r *" << flush;
-      sleep_for(seconds(1));
-    }
-    return 0;
-  } else if (spo2 < 90) {
-    cout << "Oxygen Saturation out of range!\n";
-    for (int i = 0; i < 6; i++) {
-      cout << "\r* " << flush;
-      sleep_for(seconds(1));
-      cout << "\r *" << flush;
-      sleep_for(seconds(1));
-    }
-    return 0;
+
+
+
+bool isTemperatureNormal(float temperature) {
+  return temperature >= 95 && temperature <= 102;
+}
+
+bool isPulseRateNormal(float pulseRate) {
+  return pulseRate >= 60 && pulseRate <= 100;
+}
+
+bool isSpo2Normal(float spo2) {
+  return spo2 >= 90;
+}
+
+void showAlertAnimation() {
+  for (int i = 0; i < 6; i++) {
+    cout << "\r* " << flush;
+    sleep_for(seconds(1));
+    cout << "\r *" << flush;
+    sleep_for(seconds(1));
   }
-  return 1;
+}
+
+void displayAlert(const char* message) {
+  cout << message << "\n";
+  showAlertAnimation();
+}
+
+bool checkAndAlert(bool condition, const char* message) {
+  if (!condition) {
+    displayAlert(message);
+    return false;
+  }
+  return true;
+}
+
+int vitalsOk(float temperature, float pulseRate, float spo2) {
+  return checkAndAlert(isTemperatureNormal(temperature), "Temperature is critical!") &&
+         checkAndAlert(isPulseRateNormal(pulseRate), "Pulse Rate is critical!") &&
+         checkAndAlert(isSpo2Normal(spo2), "Oxygen Saturation critical!");
 }
