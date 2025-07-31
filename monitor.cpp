@@ -6,11 +6,7 @@
 #include <string>
 using std::cout, std::flush, std::this_thread::sleep_for, std::chrono::seconds;
 
-bool isTemperatureNormal(float temperature);
-bool isPulseRateNormal(float pulseRate);
-bool isSpo2Normal(float spo2);
-bool areAllVitalsNormal(float temperature, float pulseRate, float spo2);
-int vitalsOk(float temperature, float pulseRate, float spo2);
+
 
 
 bool isTemperatureNormal(float temperature) {
@@ -39,25 +35,19 @@ void displayAlert(const char* message) {
   showAlertAnimation();
 }
 
-
-bool areAllVitalsNormal(float temperature, float pulseRate, float spo2) {
-  return isTemperatureNormal(temperature) &&
-         isPulseRateNormal(pulseRate) &&
-         isSpo2Normal(spo2);
+bool checkAndAlert(bool condition, const char* message) {
+  if (!condition) {
+    displayAlert(message);
+    return false;
+  }
+  return true;
 }
 
 int vitalsOk(float temperature, float pulseRate, float spo2) {
-  if (areAllVitalsNormal(temperature, pulseRate, spo2)) {
-    return 1;
+  if (checkAndAlert(isTemperatureNormal(temperature), "Temperature is critical!") &&
+      checkAndAlert(isPulseRateNormal(pulseRate), "Pulse Rate is critical!") &&
+      checkAndAlert(isSpo2Normal(spo2), "Oxygen Saturation critical!")) {
+    return 1; 
   }
-
-  // At this point, we know at least one vital is abnormal
-  if (!isTemperatureNormal(temperature)) {
-    displayAlert("Temperature is critical!");
-  } else if (!isPulseRateNormal(pulseRate)) {
-    displayAlert("Pulse Rate is critical!");
-  } else {
-    displayAlert("Oxygen Saturation critical!");
-  }
-  return 0;
+  return 0; 
 }
