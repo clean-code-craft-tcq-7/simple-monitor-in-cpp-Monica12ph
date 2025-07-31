@@ -6,7 +6,11 @@
 #include <string>
 using std::cout, std::flush, std::this_thread::sleep_for, std::chrono::seconds;
 
-
+bool isTemperatureNormal(float temperature);
+bool isPulseRateNormal(float pulseRate);
+bool isSpo2Normal(float spo2);
+bool areAllVitalsNormal(float temperature, float pulseRate, float spo2);
+int vitalsOk(float temperature, float pulseRate, float spo2);
 
 
 bool isTemperatureNormal(float temperature) 
@@ -51,18 +55,17 @@ bool areAllVitalsNormal(float temperature, float pulseRate, float spo2)
 
 int vitalsOk(float temperature, float pulseRate, float spo2) 
 {
-  if (!isTemperatureNormal(temperature)) 
-  {
+  if (areAllVitalsNormal(temperature, pulseRate, spo2)) {
+    return 1;
+  }
+  
+  // At this point, we know at least one vital is abnormal
+  if (!isTemperatureNormal(temperature)) {
     displayAlert("Temperature is critical!");
-    return 0;
-  }
-  if (!isPulseRateNormal(pulseRate)) {
+  } else if (!isPulseRateNormal(pulseRate)) {
     displayAlert("Pulse Rate is critical!");
-    return 0;
-  }
-  if (!isSpo2Normal(spo2)) {
+  } else {
     displayAlert("Oxygen Saturation critical!");
-    return 0;
   }
-  return 1;
+  return 0;
 }
