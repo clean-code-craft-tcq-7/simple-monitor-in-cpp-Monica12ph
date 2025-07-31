@@ -44,10 +44,7 @@ bool checkAndAlert(bool condition, const char* message) {
 }
 
 int vitalsOk(float temperature, float pulseRate, float spo2) {
-  if (checkAndAlert(isTemperatureNormal(temperature), "Temperature is critical!") &&
-      checkAndAlert(isPulseRateNormal(pulseRate), "Pulse Rate is critical!") &&
-      checkAndAlert(isSpo2Normal(spo2), "Oxygen Saturation critical!")) {
-    return 1; 
-  }
-  return 0; 
+  return checkAndAlert(isTemperatureNormal(temperature), "Temperature is critical!") &&
+         checkAndAlert(isPulseRateNormal(pulseRate), "Pulse Rate is critical!") &&
+         checkAndAlert(isSpo2Normal(spo2), "Oxygen Saturation critical!");
 }
