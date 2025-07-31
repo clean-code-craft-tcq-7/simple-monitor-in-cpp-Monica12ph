@@ -8,9 +8,8 @@ TEST(Monitor, NotOkWhenAnyVitalIsOffRange) {
 
 TEST(Monitor, TemperatureNormalRange) {
   ASSERT_TRUE(isTemperatureNormal(98.6));
-  ASSERT_TRUE(isTemperatureNormal(95));    
-  ASSERT_TRUE(isTemperatureNormal(102));  
-  ASSERT_FALSE(isTemperatureNormal(94.9)); 
-  ASSERT_FALSE(isTemperatureNormal(102.1)); 
+  ASSERT_TRUE(isTemperatureNormal(95));
+  ASSERT_TRUE(isTemperatureNormal(102));
+  ASSERT_FALSE(isTemperatureNormal(94.9));
+  ASSERT_FALSE(isTemperatureNormal(102.1));
 }
-
