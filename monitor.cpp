@@ -13,25 +13,20 @@ bool areAllVitalsNormal(float temperature, float pulseRate, float spo2);
 int vitalsOk(float temperature, float pulseRate, float spo2);
 
 
-bool isTemperatureNormal(float temperature) 
-{
+bool isTemperatureNormal(float temperature) {
   return temperature >= 95 && temperature <= 102;
 }
 
-bool isPulseRateNormal(float pulseRate) 
-{
+bool isPulseRateNormal(float pulseRate) {
   return pulseRate >= 60 && pulseRate <= 100;
 }
 
-bool isSpo2Normal(float spo2) 
-{
+bool isSpo2Normal(float spo2) {
   return spo2 >= 90;
 }
 
-void showAlertAnimation() 
-{
-  for (int i = 0; i < 6; i++) 
-  {
+void showAlertAnimation() {
+  for (int i = 0; i < 6; i++) {
     cout << "\r* " << flush;
     sleep_for(seconds(1));
     cout << "\r *" << flush;
@@ -39,26 +34,23 @@ void showAlertAnimation()
   }
 }
 
-void displayAlert(const char* message) 
-{
+void displayAlert(const char* message) {
   cout << message << "\n";
   showAlertAnimation();
 }
 
 
-bool areAllVitalsNormal(float temperature, float pulseRate, float spo2) 
-{
-  return isTemperatureNormal(temperature) && 
-         isPulseRateNormal(pulseRate) && 
+bool areAllVitalsNormal(float temperature, float pulseRate, float spo2) {
+  return isTemperatureNormal(temperature) &&
+         isPulseRateNormal(pulseRate) &&
          isSpo2Normal(spo2);
 }
 
-int vitalsOk(float temperature, float pulseRate, float spo2) 
-{
+int vitalsOk(float temperature, float pulseRate, float spo2) {
   if (areAllVitalsNormal(temperature, pulseRate, spo2)) {
     return 1;
   }
-  
+
   // At this point, we know at least one vital is abnormal
   if (!isTemperatureNormal(temperature)) {
     displayAlert("Temperature is critical!");
