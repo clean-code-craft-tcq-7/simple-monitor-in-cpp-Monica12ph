@@ -6,7 +6,16 @@
 #include <string>
 using std::cout, std::flush, std::this_thread::sleep_for, std::chrono::seconds;
 
+void delay(int seconds) {
+  sleep_for(std::chrono::seconds(seconds));
+}
 
+void (*delaypointer)(int) = delay;
+
+void delayfunction(void (*delayfunc)(int))
+{
+  delaypointer = delayfunc;
+}
 
 
 bool isTemperatureNormal(float temperature) {
@@ -24,9 +33,9 @@ bool isSpo2Normal(float spo2) {
 void showAlertAnimation() {
   for (int i = 0; i < 6; i++) {
     cout << "\r* " << flush;
-    sleep_for(seconds(1));
+   delaypointer(1);
     cout << "\r *" << flush;
-    sleep_for(seconds(1));
+   delaypointer(1);
   }
 }
 
